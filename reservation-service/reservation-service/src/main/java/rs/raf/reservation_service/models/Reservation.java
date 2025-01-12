@@ -22,7 +22,7 @@ public class Reservation {
     @JoinColumn(name = "user_reward")
     private UserReward userReward;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "time_slots_and_tables")
     private TimeSlotTables timeSlotTables;
 

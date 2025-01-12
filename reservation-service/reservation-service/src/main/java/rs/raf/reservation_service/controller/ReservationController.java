@@ -8,9 +8,12 @@ import rs.raf.reservation_service.middleware.ManagerAuthDetails;
 import rs.raf.reservation_service.middleware.UnauthorizedException;
 import rs.raf.reservation_service.models.*;
 import rs.raf.reservation_service.models.DTOs.ClientDTO;
+import rs.raf.reservation_service.models.DTOs.ReservationDTO;
 import rs.raf.reservation_service.service.ReservationService;
 import rs.raf.reservation_service.service.TimeSlotTablesService;
 import rs.raf.reservation_service.service.api.ApiService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/reservation")
@@ -27,6 +30,11 @@ public class ReservationController {
         this.authorizationService = authorizationService;
         this.apiService = apiService;
     }
+    @GetMapping
+    public List<ReservationDTO> getAllReservations() {
+        return reservationService.getAllReservations();
+    }
+
 
     @PostMapping("/{timeSlotTableId}")
     public ResponseEntity<?> createReservation(

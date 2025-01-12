@@ -20,8 +20,8 @@ public class TimeSlotTables {
     @Column(name = "is_available", columnDefinition = "boolean default true" )
     private Boolean isAvailable = true;
 
-    @OneToOne
-    @JoinColumn(name = "reservation_id", nullable = true)
+    @ManyToOne
+    @JoinColumn(name = "reservation_id", nullable = true, unique = false)
     private Reservation reservation;
 
     public TimeSlotTables() {

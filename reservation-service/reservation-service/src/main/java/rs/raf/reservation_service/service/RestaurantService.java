@@ -11,6 +11,7 @@ import rs.raf.reservation_service.repository.RestaurantRepository;
 import rs.raf.reservation_service.service.api.ApiService;
 import rs.raf.reservation_service.service.mappers.ClassToDTO.RestaurantDTOMapper;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,6 +25,10 @@ public class RestaurantService {
         this.restaurantRepository = restaurantRepository;
         this.restaurantDTOMapper = restaurantDTOMapper;
         this.apiService = apiService;
+    }
+
+    public  ResponseEntity<List<RestaurantDTO>> getAllRestaurants() {
+        return new ResponseEntity<>(restaurantRepository.findAll().stream().map(restaurantDTOMapper).toList(), HttpStatus.OK);
     }
 
     public RestaurantDTO getRestaurantById(long id) {

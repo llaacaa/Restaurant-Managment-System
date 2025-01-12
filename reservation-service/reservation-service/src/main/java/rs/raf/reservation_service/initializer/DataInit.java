@@ -35,7 +35,7 @@ public class DataInit implements CommandLineRunner {
         restaurant.setAddress("456 Elm St, Boston");
         restaurant.setDescription("Fine dining experience");
         restaurant.setTableCount(3);
-        restaurant.setWorkingHours("{ \"open\": \"12:00\", \"close\": \"23:00\" }");
+        restaurant.setWorkingHours("12:00-23:00");
         restaurant.setCuisineType("FRENCH");
         restaurant = restaurantRepository.save(restaurant);
 
@@ -44,7 +44,7 @@ public class DataInit implements CommandLineRunner {
         restaurant1.setAddress("456 Elm St, Boston");
         restaurant1.setDescription("Fine dining experience");
         restaurant1.setTableCount(3);
-        restaurant1.setWorkingHours("{ \"open\": \"12:00\", \"close\": \"23:00\" }");
+        restaurant1.setWorkingHours("12:00-23:00");
         restaurant1.setCuisineType("FRENCH");
         restaurant1 = restaurantRepository.save(restaurant1);
 

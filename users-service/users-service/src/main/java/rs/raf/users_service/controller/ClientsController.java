@@ -4,9 +4,12 @@ import io.jsonwebtoken.Claims;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import rs.raf.users_service.models.Clients;
 import rs.raf.users_service.models.DTOs.ClientDTO;
+import rs.raf.users_service.models.Users;
 import rs.raf.users_service.models.requests.ClientRegistrationRequest;
 import rs.raf.users_service.service.ClientService;
+import rs.raf.users_service.service.UserService;
 import rs.raf.users_service.service.jwt.JwtTokenUtil;
 
 import java.util.List;
@@ -16,10 +19,12 @@ import java.util.List;
 public class ClientsController {
     private final ClientService clientService;
     private final JwtTokenUtil jwtTokenUtil;
+    private final UserService userService;
 
-    public ClientsController(ClientService clientService, JwtTokenUtil jwtTokenUtil) {
+    public ClientsController(ClientService clientService, JwtTokenUtil jwtTokenUtil, UserService userService) {
         this.clientService = clientService;
         this.jwtTokenUtil = jwtTokenUtil;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -37,6 +42,14 @@ public class ClientsController {
     public ResponseEntity<?> registerClient(@RequestBody ClientRegistrationRequest client) {
         if (client.username().contains("-") || client.username().contains(":")) {
             return new ResponseEntity<>("Username cannot contain - or :", HttpStatus.BAD_REQUEST);
+        }
+        Users clientByUsername = userService.getUserByUsername(client.username());
+        if (clientByUsername != null) {
+            return new ResponseEntity<>("User with username already exists", HttpStatus.CONFLICT);
+        }
+        Users clientByEmail = userService.getUserByEmail(client.email());
+        if (clientByEmail != null) {
+            return new ResponseEntity<>("User with email already exists", HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>(clientService.createClient(client), HttpStatus.CREATED);
     }

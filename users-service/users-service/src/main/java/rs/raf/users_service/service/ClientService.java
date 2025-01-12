@@ -23,6 +23,7 @@ public class ClientService {
         this.requestClientMapper = requestClientMapper;
     }
 
+
     public List<ClientDTO> getAllClients() {
         return clientRepository.findAll()
                 .stream()

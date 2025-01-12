@@ -4,5 +4,7 @@ public record TimeSlotTableDTO(
         Long id,
         boolean isAvailable,
         TablesDTOt table,
-        TimeSlotDTOt timeSlot
+        TimeSlotDTOt timeSlot,
+        Long restaurantId,
+        String restaurantName
 ) {}

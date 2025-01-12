@@ -102,7 +102,9 @@ public class TimeSlotTablesService {
                                 slot.getTimeSlot().getId(),
                                 slot.getTimeSlot().getDate(),
                                 slot.getTimeSlot().getTime()
-                        )
+                        ),
+                        slot.getTimeSlot().getRestaurant().getId(),
+                        slot.getTimeSlot().getRestaurant().getName()
                 ))
                 .toList();
     }

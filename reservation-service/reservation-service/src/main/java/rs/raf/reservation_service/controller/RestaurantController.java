@@ -6,8 +6,12 @@ import org.springframework.web.bind.annotation.*;
 import rs.raf.reservation_service.middleware.AuthorizationService;
 import rs.raf.reservation_service.middleware.ManagerAuthDetails;
 import rs.raf.reservation_service.middleware.UnauthorizedException;
+import rs.raf.reservation_service.models.DTOs.RestaurantDTO;
+import rs.raf.reservation_service.models.Restaurant;
 import rs.raf.reservation_service.models.requests.UpdateRestaurantRequest;
 import rs.raf.reservation_service.service.RestaurantService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/restaurant")
@@ -34,5 +38,10 @@ public class RestaurantController {
         } catch (RuntimeException e) {
             return new ResponseEntity<>("Internal error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<RestaurantDTO>> getRestaurants() {
+        return restaurantService.getAllRestaurants();
     }
 }

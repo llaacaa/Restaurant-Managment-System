@@ -32,3 +32,6 @@ eureka:
 
 jwt:
   secret: bc4996f25409935536e23ff35b8d8ea734851662d5bdf97e5854f2bde7c8255b111868b1c4ba58d3795332226f28a0eb5d7ce318b632b06c8392b6c54c147f4d
+
+frontend:
+  url: http://localhost:5173

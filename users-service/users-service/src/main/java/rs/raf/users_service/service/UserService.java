@@ -3,12 +3,15 @@ package rs.raf.users_service.service;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import rs.raf.users_service.models.DTOs.LoginResponseDTO;
 import rs.raf.users_service.models.Managers;
 import rs.raf.users_service.models.Users;
 import rs.raf.users_service.models.requests.UserDataRequest;
 import rs.raf.users_service.models.requests.UserLoginRequest;
 import rs.raf.users_service.repository.UserRepository;
 import rs.raf.users_service.service.jwt.JwtTokenUtil;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -24,23 +27,41 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
-    public String login(UserLoginRequest userLoginRequest) {
+    public List<Users> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public ResponseEntity<?> login(UserLoginRequest userLoginRequest) {
         Users user = userRepository.findByUsernameAndPassword(userLoginRequest.username(), userLoginRequest.password())
                 .orElse(null);
-        if(user != null) {
+        if (user != null) {
 //            if (!user.getActive()) {
 //                return "User is not active.";
 //            }
-            if (user.getBlocked()){
-                return "User is blocked.";
+            if (user.getBlocked()) {
+                new ResponseEntity<>("User is blocked.", HttpStatus.FORBIDDEN);
             }
-            return jwtTokenUtil.generateToken(user.getId(), user.getUsername(), user.getRole());
+            return new ResponseEntity<>(new LoginResponseDTO(jwtTokenUtil.generateToken(user.getId(), user.getUsername(), user.getRole()), user.getRole(), user.getId()), HttpStatus.OK);
         }
-        return "Invalid username or password.";
+        return new ResponseEntity<>("Invalid username or password.", HttpStatus.BAD_REQUEST);
     }
 
     public Users getUserByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
+    }
+
+    public Users getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public ResponseEntity<?> toggleBlock(Users users) {
+        users.setBlocked(!users.getBlocked());
+        userRepository.save(users);
+        if (users.getBlocked()) {
+            return new ResponseEntity<>("User blocked.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("User unblocked.", HttpStatus.OK);
+        }
     }
 
     public ResponseEntity<String> updateUser(Users existingUser, UserDataRequest user) {
