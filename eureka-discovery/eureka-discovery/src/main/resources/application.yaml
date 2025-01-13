@@ -9,3 +9,6 @@ eureka:
 spring:
   application:
     name: eureka-server
+
+frontend:
+  url: http://localhost:5173
